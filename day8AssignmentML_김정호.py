@@ -23,10 +23,10 @@ st.write("직원의 정보를 입력하여 퇴사 가능성을 예측합니다."
 # ======================
 # satisfaction_level은 0.0 ~ 1.0 사이의 실수
 satisfaction_level = st.slider("만족도 (0.0 ~ 1.0)", 0.0, 1.0, 0.5)
-# time_spend_company는 보통 연수 (정수)
-time_spend_company = st.number_input("근무 연수", min_value=1, max_value=10, value=5)
 # number_project는 프로젝트 수 (정수)
-number_project = st.number_input("프로젝트 수", min_value=1, max_value=20, value=10)
+number_project = st.number_input("프로젝트 수", min_value=1, max_value=10, value=5)
+# time_spend_company는 보통 연수 (정수)
+time_spend_company = st.number_input("근무 연수", min_value=1, max_value=20, value=10)
 
 # ======================
 # 3. 데이터 구성 및 예측
