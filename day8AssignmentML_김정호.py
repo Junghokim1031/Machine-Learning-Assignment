@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
 import joblib
-import numpy as np
 
 # ======================
 # 1. 모델, 인코더, 스케일러 로드
@@ -31,7 +30,6 @@ time_spend_company = st.number_input("근무 연수", min_value=1, max_value=20,
 # 3. 데이터 구성 및 예측
 # ======================
 if st.button("예측하기"):
-    # 1. 입력 데이터 프레임 생성
     input_data = pd.DataFrame({
         'satisfaction_level': [satisfaction_level],
         'number_project': [number_project],
@@ -42,10 +40,7 @@ if st.button("예측하기"):
     try:
         
         input_data_scaled = scaler.transform(input_data)
-        # 모델이 피처 이름을 기대한다면 DataFrame으로 다시 변환
         input_data_scaled = pd.DataFrame(input_data_scaled, columns=input_data.columns)
-
-        # 4. 예측 수행
         prediction = model.predict(input_data_scaled)[0]
         probability = model.predict_proba(input_data_scaled)[0][1] # 퇴사(1) 확률
 
@@ -53,9 +48,6 @@ if st.button("예측하기"):
             st.error(f" :red[퇴사확률: {probability:.2%}]")
         else:
             st.success(f" :green[잔류 확률: {probability:.2%}]")
-
-        st.write("### 입력 데이터 상세")
-        st.dataframe(input_data)
 
     except Exception as e:
         st.error(f"데이터 처리 중 오류 발생: {e}")
