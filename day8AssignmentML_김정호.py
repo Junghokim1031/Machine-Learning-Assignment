@@ -44,12 +44,8 @@ if st.button("예측하기"):
             input_data[col] = encoders[col].transform(input_data[col])
         
         # 3. 스케일링 (학습 때 StandardScaler를 썼으므로 필수)
-        if scaler:
-            input_data_scaled = scaler.transform(input_data)
-            # 모델이 피처 이름을 기대한다면 DataFrame으로 다시 변환
-            input_data_scaled = pd.DataFrame(input_data_scaled, columns=input_data.columns)
-        else:
-            input_data_scaled = input_data
+    
+        input_data_scaled = input_data
 
         # 4. 예측 수행
         prediction = model.predict(input_data_scaled)[0]
