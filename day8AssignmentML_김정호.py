@@ -10,10 +10,9 @@ import numpy as np
 def load_ml_assets():
     model = joblib.load("modeljunghoKim.pkl")
     encoders = joblib.load("encoderjunghoKim.pkl")
-    scaler = joblib.load("scalerjunghoKim.pkl")
-    return model, encoders, scaler
+    return model, encoders
 
-model, encoders, scaler = load_ml_assets()
+model, encoders = load_ml_assets()
 
 st.title("퇴사 여부 예측 시스템")
 st.write("직원의 정보를 입력하여 퇴사 가능성을 예측합니다.")
@@ -32,7 +31,6 @@ time_spend_company = st.number_input("근무 연수", min_value=1, max_value=20,
 # 3. 데이터 구성 및 예측
 # ======================
 if st.button("예측하기"):
-    # 1. 입력 데이터 프레임 생성
     input_data = pd.DataFrame({
         'satisfaction_level': [satisfaction_level],
         'number_project': [number_project],
