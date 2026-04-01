@@ -8,12 +8,11 @@ import numpy as np
 # ======================
 @st.cache_resource
 def load_ml_assets():
-    model = joblib.load("modeljunghoKim.pkl")
-    encoders = joblib.load("encoderjunghoKim.pkl")
-    scaler = joblib.load("scalerjunghoKim.pkl")
-    return model, encoders, scaler
+    model = joblib.load("./models/modeljunghoKim.pkl")
+    scaler = joblib.load("./models/scalerjunghoKim.pkl")
+    return model, scaler
 
-model, encoders, scaler = load_ml_assets()
+model, scaler = load_ml_assets()
 
 st.title("퇴사 여부 예측 시스템")
 st.write("직원의 정보를 입력하여 퇴사 가능성을 예측합니다.")
@@ -39,19 +38,12 @@ if st.button("예측하기"):
         'time_spend_company': [time_spend_company]
     })
 
-    # 2. 인코딩 (노트북에서 숫자형에도 LabelEncoder를 썼으므로 동일하게 적용)
-    # 주의: 노트북에서 LabelEncoder를 숫자형에 쓴 것은 위험할 수 있습니다 (학습 단계에 없던 값 입력 시 에러 발생)
+    # 2. 인코딩
     try:
-        for col in input_data.columns:
-            input_data[col] = encoders[col].transform(input_data[col])
         
-        # 3. 스케일링 (학습 때 StandardScaler를 썼으므로 필수)
-        if scaler:
-            input_data_scaled = scaler.transform(input_data)
-            # 모델이 피처 이름을 기대한다면 DataFrame으로 다시 변환
-            input_data_scaled = pd.DataFrame(input_data_scaled, columns=input_data.columns)
-        else:
-            input_data_scaled = input_data
+        input_data_scaled = scaler.transform(input_data)
+        # 모델이 피처 이름을 기대한다면 DataFrame으로 다시 변환
+        input_data_scaled = pd.DataFrame(input_data_scaled, columns=input_data.columns)
 
         # 4. 예측 수행
         prediction = model.predict(input_data_scaled)[0]
